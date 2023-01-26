@@ -27,16 +27,45 @@ public class AtmShould
     {
         var actual = atm.WithDraw(money);
 
-        var expected = Wallet.Of( coin );
+        var expected = Wallet.Of(coin);
         Assert.That(actual, Is.EqualTo(expected));
     }
 
     [Test]
-    public void ReturnTwoAndOneCoin_when_three()
+    [TestCase(3)]
+    [TestCase(6)]
+    [TestCase(7)]
+    public void ReturnSum_when_TwoDifferentCoins(int money)
     {
-        var actual = atm.WithDraw(3);
+        var actual = atm.WithDraw(money);
 
-        var expected = Wallet.Of( Money.One, Money.Two );
+        Assert.That(actual.NumberOfDifferentCoins(), Is.EqualTo(2));
+        Assert.That(actual.Total(), Is.EqualTo(money));
+    }
+
+    [Test]
+    [TestCase(4)]
+    public void ReturnSum_when_SameTwoCoin(int money)
+    {
+        var actual = atm.WithDraw(money);
+
+        Assert.That(actual.NumberOfDifferentCoins(), Is.EqualTo(1));
+        Assert.That(actual.Total(), Is.EqualTo(money));
+    }
+
+    [Test]
+    public void Return434()
+    {
+        var actual = atm.WithDraw(434);
+
+        var expected = Wallet.Of(
+            Money.Two,
+            Money.Two,
+            Money.Ten,
+            Money.Twenty,
+            Money.TwoHundred,
+            Money.TwoHundred
+        );
         Assert.That(actual, Is.EqualTo(expected));
     }
 

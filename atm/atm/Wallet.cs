@@ -16,7 +16,8 @@ public class Wallet
 
     public override string ToString()
     {
-        return $"Wallet({_money}";
+        var joined = string.Join(", ", _money.Select(x => x.Value));
+        return $"Wallet({joined}";
     }
 
 
@@ -32,5 +33,15 @@ public class Wallet
     public override int GetHashCode()
     {
         return _money.GetHashCode();
+    }
+
+    public int Total()
+    {
+        return _money.Select(x => x.Value).Sum();
+    }
+
+    public int NumberOfDifferentCoins()
+    {
+        return _money.Distinct().Count();
     }
 }

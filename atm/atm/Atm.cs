@@ -4,24 +4,22 @@ public class Atm
 {
     public Wallet WithDraw(int money)
     {
-        if (money == 0)
-        {
-            return Wallet.Of();
-        }
-
-        var exactMoney = ExactMoney(money);
-        if (exactMoney != null)
-        {
-            return Wallet.Of(exactMoney);
-        }
-
-        return Wallet.Of(Money.One, Money.Two);
+        var result = WithDrawAsList(money);
+        return Wallet.Of(result.ToArray());
     }
 
-    private static Money? ExactMoney(int money)
+    private List<Money> WithDrawAsList(int money)
     {
-        return Money
-            .All()
-            .FirstOrDefault(x => x.Value == money);
+        if (money == 0) return new List<Money>();
+        var head = TakeWithValue(money);
+        var tail = WithDrawAsList(money - head.Value);
+        tail.Add(head);
+        return tail;
     }
+
+    private static Money TakeWithValue(int money)
+    {
+        return Money.All().First(x => x.Value <= money);
+    }
+
 }

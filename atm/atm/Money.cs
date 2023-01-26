@@ -1,7 +1,17 @@
+using System.Collections;
+
 namespace atm;
 
-public sealed record Money(int Value)
+public class Money
 {
+    public readonly int Value;
+    
+    private Money(int value)
+    {
+        this.Value = value;
+    }
+
+
     public static readonly Money One = new(1);
     public static readonly Money Two = new(2);
     public static readonly Money Five = new(5);
@@ -28,4 +38,16 @@ public sealed record Money(int Value)
             One
         };
     }
+
+    public static IComparer<Money> Comparer = new MoneyComparer();
+
+    private class MoneyComparer : IComparer<Money>
+    {
+        public int Compare(Money? x, Money? y)
+        {
+            return x!.Value.CompareTo(y!.Value);
+        }
+    }
+        
+
 }

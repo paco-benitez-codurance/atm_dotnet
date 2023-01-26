@@ -17,7 +17,7 @@ public class AtmShould
     {
         var actual = atm.WithDraw(0);
 
-        var expected = Wallet.Of();
+        var expected = Wallet.Of(Array.Empty<Money>());
         Assert.That(actual, Is.EqualTo(expected));
     }
 
@@ -59,12 +59,10 @@ public class AtmShould
         var actual = atm.WithDraw(434);
 
         var expected = Wallet.Of(
-            Money.Two,
-            Money.Two,
-            Money.Ten,
-            Money.Twenty,
-            Money.TwoHundred,
-            Money.TwoHundred
+            (2, Money.Two),
+            (1, Money.Ten),
+            (1, Money.Twenty),
+            (2, Money.TwoHundred)
         );
         Assert.That(actual, Is.EqualTo(expected));
     }

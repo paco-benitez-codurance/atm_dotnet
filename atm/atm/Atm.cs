@@ -1,15 +1,9 @@
 ﻿namespace atm;
 
-public class Atm
+public class Atm<TMoney>
 {
-    public String Hi()
+    public List<TMoney> WithDraw(int i)
     {
-        return "hi";
+        return new List<TMoney>();
     }
-
-    public static void Main(string[] args)
-    {
-        Console.WriteLine("Hellow");
-    }
-    
 }

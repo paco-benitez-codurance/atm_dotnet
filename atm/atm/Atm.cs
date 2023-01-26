@@ -1,9 +1,13 @@
 ﻿namespace atm;
 
-public class Atm<TMoney>
+public class Atm
 {
-    public List<TMoney> WithDraw(int i)
+    public List<Money> WithDraw(int money)
     {
-        return new List<TMoney>();
+        return money switch
+        {
+            1 => new List<Money>() { Money.OneCoin },
+            _ => new List<Money>()
+        };
     }
 }

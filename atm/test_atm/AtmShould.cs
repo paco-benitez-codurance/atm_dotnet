@@ -4,8 +4,8 @@ namespace test_atm;
 
 public class AtmShould
 {
-    private Atm atm;
-    
+    Atm atm = null!;
+
     [SetUp]
     public void Setup()
     {
@@ -17,7 +17,7 @@ public class AtmShould
     {
         var actual = atm.WithDraw(0);
 
-        var expected = new List<Money>();
+        var expected = Wallet.Of();
         Assert.That(actual, Is.EqualTo(expected));
     }
 
@@ -27,13 +27,22 @@ public class AtmShould
     {
         var actual = atm.WithDraw(money);
 
-        var expected = new List<Money>() { coin };
+        var expected = Wallet.Of( coin );
+        Assert.That(actual, Is.EqualTo(expected));
+    }
+
+    [Test]
+    public void ReturnTwoAndOneCoin_when_three()
+    {
+        var actual = atm.WithDraw(3);
+
+        var expected = Wallet.Of( Money.One, Money.Two );
         Assert.That(actual, Is.EqualTo(expected));
     }
 
 
     private static IEnumerable<TestCaseData> Coins()
     {
-        return Money.AllCoins().Select(x => new TestCaseData(x.Value, x));
+        return Money.All().Select(x => new TestCaseData(x.Value, x));
     }
 }

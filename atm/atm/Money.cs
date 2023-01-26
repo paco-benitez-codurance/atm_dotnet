@@ -1,19 +1,14 @@
 namespace atm;
 
-public class Money
+public sealed record Money(int Value)
 {
-    public int Value { get; }
-    
-    private static readonly Money One = new(1);
-    private static readonly Money Two = new(2);
+
+    public static readonly Money One = new(1);
+    public static readonly Money Two = new(2);
     private static readonly Money Five = new(5);
 
-    private Money(int value)
-    {
-        Value = value;
-    }
 
-    public static IEnumerable<Money> AllCoins()
+    public static IEnumerable<Money> All()
     {
         return new List<Money>()
         {

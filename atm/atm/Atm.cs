@@ -2,8 +2,21 @@
 
 public class Atm
 {
+    private Wallet _wallet;
+    private bool _infinity;
+
+    private Atm(bool infinity, Wallet wallet)
+    {
+        _infinity = infinity;
+        _wallet = wallet;
+    }
+
     public Wallet WithDraw(int money)
     {
+        if (_infinity == false)
+        {
+            throw new NotEnoughAtmCash();
+        }
         var result = WithDrawAsList(money);
         return Wallet.Of(result.ToArray());
     }
@@ -22,4 +35,18 @@ public class Atm
         return Money.All().First(x => x.Value <= money);
     }
 
+    public static Atm of(Wallet wallet)
+    {
+        return new Atm(false, wallet);
+    }
+
+    public static Atm InfinityWallet()
+    {
+        return new Atm(true, Wallet.Of(Array.Empty<Money>()));
+    }
+
+    public Wallet State()
+    {
+        return _wallet;
+    }
 }

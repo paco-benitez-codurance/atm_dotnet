@@ -4,18 +4,18 @@ namespace test_atm;
 
 public class AtmShould
 {
-    Atm atm = null!;
+    Atm _atm = null!;
 
     [SetUp]
     public void Setup()
     {
-        atm = new Atm();
+        _atm = Atm.InfinityWallet();
     }
 
     [Test]
     public void ReturnEmptyList_when_Zero()
     {
-        var actual = atm.WithDraw(0);
+        var actual = _atm.WithDraw(0);
 
         var expected = Wallet.Of(Array.Empty<Money>());
         Assert.That(actual, Is.EqualTo(expected));
@@ -25,7 +25,7 @@ public class AtmShould
     [TestCaseSource(nameof(Coins))]
     public void ReturnOneCoin_when_MoneyIsTheValueOfTheCoin(int money, Money coin)
     {
-        var actual = atm.WithDraw(money);
+        var actual = _atm.WithDraw(money);
 
         var expected = Wallet.Of(coin);
         Assert.That(actual, Is.EqualTo(expected));
@@ -37,7 +37,7 @@ public class AtmShould
     [TestCase(7)]
     public void ReturnSum_when_TwoDifferentCoins(int money)
     {
-        var actual = atm.WithDraw(money);
+        var actual = _atm.WithDraw(money);
 
         Assert.That(actual.NumberOfDifferentCoins(), Is.EqualTo(2));
         Assert.That(actual.Total(), Is.EqualTo(money));
@@ -47,7 +47,7 @@ public class AtmShould
     [TestCase(4)]
     public void ReturnSum_when_SameTwoCoin(int money)
     {
-        var actual = atm.WithDraw(money);
+        var actual = _atm.WithDraw(money);
 
         Assert.That(actual.NumberOfDifferentCoins(), Is.EqualTo(1));
         Assert.That(actual.Total(), Is.EqualTo(money));
@@ -56,7 +56,7 @@ public class AtmShould
     [Test]
     public void Return434()
     {
-        var actual = atm.WithDraw(434);
+        var actual = _atm.WithDraw(434);
 
         var expected = Wallet.Of(
             (2, Money.Two),

@@ -5,7 +5,7 @@ namespace atm;
 public class Wallet
 {
     private readonly ImmutableList<Money> _money;
-
+    
     private Wallet(IEnumerable<Money> money)
     {
         _money = money.ToImmutableList();

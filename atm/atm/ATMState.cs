@@ -14,8 +14,8 @@ public class AtmState : IAtmState
 
     public bool HasMoney(int money)
     {
-        var coins = _coinSplitter.WithDrawAsList(money);
-        return _wallet.Total() >= money;
+        var requestedCoins = _coinSplitter.WithDrawAsList(money);
+        return _wallet.HasCoins(requestedCoins);
     }
 
     public static AtmState Of(Wallet wallet, CoinSplitter? coinSpliter = null)

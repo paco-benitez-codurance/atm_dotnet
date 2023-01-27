@@ -9,32 +9,37 @@ public class AtmStateShould
     public void ReturnFalseIfHasNoCoins()
     {
         const int money = 9;
-        const int notEnoughMoney = 8;
-        var atmState = AnAtmState(notEnoughMoney);
+        var wallet = new Mock<Wallet>();
+        var withdraw = new List<Money>() { Money.Five };
+        var coinSplitter = ACoinSplitter(money, withdraw);
+        wallet.Setup(w => w.HasCoins(withdraw)).Returns(false);
+        
+        
+        var atmState = AtmState.Of(wallet.Object, coinSplitter);
 
         var actual = atmState.HasMoney(money);
-
         Assert.That(actual, Is.EqualTo(false));
     }
-
-
+    
     [Test]
     public void ReturnTrueIfHasCoins()
     {
-        const int money = 10;
-        const int enoughMoney = 10;
-        var atmState = AnAtmState(enoughMoney);
+        const int money = 9;
+        var wallet = new Mock<Wallet>();
+        var withdraw = new List<Money>() { Money.Five };
+        var coinSplitter = ACoinSplitter(money, withdraw);
+        wallet.Setup(w => w.HasCoins(withdraw)).Returns(true);
+        var atmState = AtmState.Of(wallet.Object, coinSplitter);
 
         var actual = atmState.HasMoney(money);
 
         Assert.That(actual, Is.EqualTo(true));
     }
-    
-    private static AtmState AnAtmState(int notEnoughMoney)
+
+    private static CoinSplitter ACoinSplitter(int money, List<Money> withdraw)
     {
-        var wallet = new Mock<Wallet>();
-        wallet.Setup(w => w.Total()).Returns(notEnoughMoney);
-        var atmState = atm.AtmState.Of(wallet.Object);
-        return atmState;
+        var coinSplitter = new Mock<CoinSplitter>();
+        coinSplitter.Setup(cs => cs.WithDrawAsList(money)).Returns(withdraw);
+        return coinSplitter.Object;
     }
 }

@@ -37,6 +37,11 @@ public class Wallet
         return _money.Distinct().Count();
     }
 
+    public virtual bool HasCoins(List<Money> coins)
+    {
+        throw new NotImplementedException();
+    }
+
     public override string ToString()
     {
         var joined = string.Join(", ", _money.Select(x => x));
@@ -56,10 +61,5 @@ public class Wallet
     public override int GetHashCode()
     {
         return _money.GetHashCode();
-    }
-
-    public bool HasCoins(List<Money> coins)
-    {
-        throw new NotImplementedException();
     }
 }

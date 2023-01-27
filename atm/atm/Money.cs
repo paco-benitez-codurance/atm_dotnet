@@ -1,4 +1,3 @@
-using System.Collections;
 
 namespace atm;
 
@@ -8,7 +7,7 @@ public class Money
     
     private Money(int value)
     {
-        this.Value = value;
+        Value = value;
     }
 
 
@@ -25,7 +24,7 @@ public class Money
 
     public static IEnumerable<Money> All()
     {
-        return new List<Money>()
+        return new List<Money>
         {
             FiveHundred,
             TwoHundred,
@@ -39,7 +38,7 @@ public class Money
         };
     }
 
-    public static IComparer<Money> Comparer = new MoneyComparer();
+    public static readonly IComparer<Money> Comparer = new MoneyComparer();
 
     private class MoneyComparer : IComparer<Money>
     {

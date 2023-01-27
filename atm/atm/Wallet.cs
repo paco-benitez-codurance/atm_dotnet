@@ -20,7 +20,7 @@ public class Wallet
     {
         var res =
             money.SelectMany(x => Enumerable.Repeat(x.Item2, x.Item1));
-        return Wallet.Of(res.ToArray());
+        return Of(res.ToArray());
     }
 
     public int Total()
@@ -40,15 +40,13 @@ public class Wallet
     }
 
 
-    public override bool Equals(object? y)
+    public override bool Equals(object? obj)
     {
-        if (ReferenceEquals(this, y)) return true;
-        if (ReferenceEquals(this, null)) return false;
-        if (ReferenceEquals(y, null)) return false;
-        if (GetType() != y.GetType()) return false;
+        var foo = obj as Wallet;
         var myValues = _money.Sort(Money.Comparer);
-        var otherValues = ((Wallet)y)._money.Sort(Money.Comparer);
-        return myValues.SequenceEqual(otherValues);
+        var otherValues = foo?._money.Sort(Money.Comparer);
+        return foo != null &&
+               myValues.SequenceEqual(otherValues!);
     }
 
     public override int GetHashCode()

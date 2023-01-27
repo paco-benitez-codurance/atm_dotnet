@@ -4,7 +4,7 @@ namespace test_atm;
 
 public class AtmShould
 {
-    Atm _atm = null!;
+    private Atm _atm = null!;
 
     [SetUp]
     public void Setup()
@@ -39,8 +39,11 @@ public class AtmShould
     {
         var actual = _atm.WithDraw(money);
 
-        Assert.That(actual.NumberOfDifferentCoins(), Is.EqualTo(2));
-        Assert.That(actual.Total(), Is.EqualTo(money));
+        Assert.Multiple(() =>
+        {
+            Assert.That(actual.NumberOfDifferentCoins(), Is.EqualTo(2));
+            Assert.That(actual.Total(), Is.EqualTo(money));
+        });
     }
 
     [Test]
@@ -49,8 +52,11 @@ public class AtmShould
     {
         var actual = _atm.WithDraw(money);
 
-        Assert.That(actual.NumberOfDifferentCoins(), Is.EqualTo(1));
-        Assert.That(actual.Total(), Is.EqualTo(money));
+        Assert.Multiple(() =>
+        {
+            Assert.That(actual.NumberOfDifferentCoins(), Is.EqualTo(1));
+            Assert.That(actual.Total(), Is.EqualTo(money));
+        });
     }
 
     [Test]

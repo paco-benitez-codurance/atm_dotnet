@@ -2,18 +2,16 @@
 
 public class Atm
 {
-    private Wallet _wallet;
-    private bool _infinity;
+    private readonly AtmState _state;
 
-    private Atm(bool infinity, Wallet wallet)
+    private Atm(AtmState state)
     {
-        _infinity = infinity;
-        _wallet = wallet;
+        _state = state;
     }
 
     public Wallet WithDraw(int money)
     {
-        if (_infinity == false)
+        if (_state.HasMoney(money) == false)
         {
             throw new NotEnoughAtmCash();
         }
@@ -21,7 +19,7 @@ public class Atm
         return Wallet.Of(result.ToArray());
     }
 
-    private List<Money> WithDrawAsList(int money)
+    private static List<Money> WithDrawAsList(int money)
     {
         if (money == 0) return new List<Money>();
         var head = TakeWithValue(money);
@@ -35,18 +33,18 @@ public class Atm
         return Money.All().First(x => x.Value <= money);
     }
 
-    public static Atm of(Wallet wallet)
+    public static Atm Of(AtmState state)
     {
-        return new Atm(false, wallet);
+        return new Atm(state);
     }
 
     public static Atm InfinityWallet()
     {
-        return new Atm(true, Wallet.Of(Array.Empty<Money>()));
+        return new Atm(AtmState.InfinityWallet());
     }
 
-    public Wallet State()
+    public AtmState State()
     {
-        return _wallet;
+        return _state;
     }
 }

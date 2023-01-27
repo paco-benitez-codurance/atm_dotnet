@@ -1,4 +1,5 @@
 using atm;
+using Moq;
 
 namespace test_atm;
 
@@ -8,26 +9,28 @@ public class SecondIterationAtmShould
     public void ProvideAWayToGiveInitialState()
     {
         var wallet = AWallet();
-        var app = Atm.of(wallet);
+        var app = NewAtm(AtmState.Of(wallet));
 
-        Assert.That(app.State(), Is.EqualTo(wallet));
+        Assert.That(app.State(), Is.EqualTo(AtmState.Of(wallet)));
     }
 
+
     [Test]
-    public void RaiseErrorIfAtmWalletIsEmpty()
+    public void RaiseErrorIfAtmHasNoMoney()
     {
-        var wallet = AnEmptyWallet();
-        var money = 3;
-        var app = Atm.of(wallet);
+        const int money = 3;
+        var atmState = new Mock<AtmState>();
+        atmState.Setup(x => x.HasMoney(money)).Returns(false);
+        var app = NewAtm(atmState.Object);
 
         Assert.Throws<NotEnoughAtmCash>(() =>
             app.WithDraw(money)
         );
     }
 
-    private static Wallet AnEmptyWallet()
+    private static Atm NewAtm(AtmState atmState)
     {
-        return Wallet.Of(Array.Empty<Money>());
+        return Atm.Of(atmState);
     }
 
     private static Wallet AWallet()

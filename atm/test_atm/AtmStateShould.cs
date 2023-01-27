@@ -27,7 +27,7 @@ public class AtmStateShould
     {
         const int money = 9;
         var wallet = new Mock<Wallet>();
-        var withdraw = new List<Money>() { Money.Five };
+        var withdraw = new List<Money> { Money.Five };
         var coinSplitter = ACoinSplitter(money, withdraw, withdraw);
         wallet.Setup(w => w.HasCoins(withdraw)).Returns(true);
         wallet.Setup(w => w.Coins()).Returns(withdraw);

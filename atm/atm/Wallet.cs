@@ -27,11 +27,6 @@ public class Wallet
         return Of(res.ToArray());
     }
 
-    public virtual int Total()
-    {
-        return _money.Select(x => x.Value).Sum();
-    }
-
     public virtual bool HasCoins(IEnumerable<Money> coins)
     {
         var clone = new List<Money>(_money);

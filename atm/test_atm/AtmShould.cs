@@ -10,7 +10,7 @@ public class AtmShould
     {
         var coinSplitter = new Mock<CoinSplitter>();
         const int money = 33;
-        var coins = new List<Money>() { Money.Fifty, Money.One };
+        var coins = new List<Money> { Money.Fifty, Money.One };
         coinSplitter.Setup(cs => cs.WithDrawAsList(money, null)).Returns(coins);
 
         var atm = Atm.InfinityWallet(coinSplitter.Object);

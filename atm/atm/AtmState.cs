@@ -18,9 +18,9 @@ public abstract class AtmState
     public abstract List<Money> WithDrawAsList(int money);
   
 
-    public static AtmState Of(Wallet wallet, CoinSplitter? coinSpliter = null)
+    public static AtmState Of(Wallet wallet, CoinSplitter? coinSplitter = null)
     {
-        return new LimitedAtmState(wallet, coinSpliter ?? new CoinSplitter());
+        return new LimitedAtmState(wallet, coinSplitter ?? new CoinSplitter());
     }
 
     public static AtmState InfinityWallet(CoinSplitter coinSplitter)

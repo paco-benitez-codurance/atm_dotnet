@@ -1,4 +1,3 @@
-using System.Collections.Immutable;
 using atm;
 
 namespace test_atm;
@@ -75,7 +74,7 @@ public class CoinSplitterShould
     public void NoRaiseErrorIfHasCoins()
     {
         const int money = 3;
-        var initialCoins = new List<Money>() { Money.Two, Money.One };
+        var initialCoins = new List<Money> { Money.Two, Money.One };
 
         var actual = _coinSplitter.WithDrawAsList(money, initialCoins);
         Assert.That(
@@ -89,12 +88,12 @@ public class CoinSplitterShould
         return Money.All().Select(x => new TestCaseData(x.Value, x));
     }
 
-    private static int Total(List<Money> money)
+    private static int Total(IEnumerable<Money> money)
     {
         return money.Select(x => x.Value).Sum();
     }
 
-    private static int NumberOfDifferentCoins(List<Money> money)
+    private static int NumberOfDifferentCoins(IEnumerable<Money> money)
     {
         return money.Distinct().Count();
     }

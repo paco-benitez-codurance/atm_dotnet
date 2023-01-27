@@ -1,5 +1,4 @@
 using atm;
-using Moq;
 
 namespace test_atm;
 

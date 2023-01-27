@@ -13,7 +13,18 @@ public abstract class AtmState
         CoinSplitter = coinSplitter;
     }
 
-    public abstract bool HasMoney(int money);
+    public virtual bool HasMoney(int money)
+    {
+        try
+        {
+            WithDrawAsList(money);
+            return true;
+        }
+        catch (NotEnoughCoins)
+        {
+            return false;
+        }
+    }
 
     public abstract List<Money> WithDrawAsList(int money);
   

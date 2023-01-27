@@ -13,7 +13,7 @@ public class FirstIterationShould
     }
 
     [Test]
-    public void Return434()
+    public void WithDraw434()
     {
         var actual = _atm.WithDraw(434);
 

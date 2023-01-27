@@ -38,6 +38,11 @@ public class Money
         };
     }
 
+    public override string ToString()
+    {
+        return $"Money({Value})";
+    }
+
     public static readonly IComparer<Money> Comparer = new MoneyComparer();
 
     private class MoneyComparer : IComparer<Money>

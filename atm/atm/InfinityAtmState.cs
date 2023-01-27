@@ -6,11 +6,6 @@ internal class InfinityAtmState : AtmState
     {
     }
 
-    public override bool HasMoney(int money)
-    {
-        return true;
-    }
-    
     public override List<Money> WithDrawAsList(int money)
     {
         return CoinSplitter.WithDrawAsList(money);

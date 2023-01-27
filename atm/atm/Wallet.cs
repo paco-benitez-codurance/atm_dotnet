@@ -5,7 +5,11 @@ namespace atm;
 public class Wallet
 {
     private readonly ImmutableList<Money> _money;
-    
+
+    public Wallet()
+    {
+    }
+
     private Wallet(IEnumerable<Money> money)
     {
         _money = money.ToImmutableList();
@@ -23,7 +27,7 @@ public class Wallet
         return Of(res.ToArray());
     }
 
-    public int Total()
+    public virtual int Total()
     {
         return _money.Select(x => x.Value).Sum();
     }

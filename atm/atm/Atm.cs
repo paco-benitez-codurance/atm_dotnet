@@ -2,9 +2,9 @@
 
 public class Atm
 {
-    private readonly AtmState _state;
+    private readonly IAtmState _state;
 
-    private Atm(AtmState state)
+    private Atm(IAtmState state)
     {
         _state = state;
     }
@@ -33,7 +33,7 @@ public class Atm
         return Money.All().First(x => x.Value <= money);
     }
 
-    public static Atm Of(AtmState state)
+    public static Atm Of(IAtmState state)
     {
         return new Atm(state);
     }
@@ -43,7 +43,7 @@ public class Atm
         return new Atm(AtmState.InfinityWallet());
     }
 
-    public AtmState State()
+    public IAtmState State()
     {
         return _state;
     }

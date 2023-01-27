@@ -19,7 +19,7 @@ public class SecondIterationAtmShould
     public void RaiseErrorIfAtmHasNoMoney()
     {
         const int money = 3;
-        var atmState = new Mock<AtmState>();
+        var atmState = new Mock<IAtmState>();
         atmState.Setup(x => x.HasMoney(money)).Returns(false);
         var app = NewAtm(atmState.Object);
 
@@ -28,7 +28,7 @@ public class SecondIterationAtmShould
         );
     }
 
-    private static Atm NewAtm(AtmState atmState)
+    private static Atm NewAtm(IAtmState atmState)
     {
         return Atm.Of(atmState);
     }

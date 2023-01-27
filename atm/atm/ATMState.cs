@@ -1,42 +1,35 @@
 namespace atm;
 
-public class AtmState
+public class AtmState : IAtmState
 {
     private readonly Wallet _wallet;
-    private readonly bool _infinity;
 
-    private AtmState(bool infinity, Wallet wallet)
+
+    private AtmState(Wallet wallet)
     {
         _wallet = wallet;
-        _infinity = infinity;
     }
 
-    public virtual bool HasMoney(int money)
+    public bool HasMoney(int money)
     {
-        if (_infinity)
-        {
-            return true;
-        }
-
-        throw new NotImplementedException();
+        return _wallet.Total() >= money;
     }
 
     public static AtmState Of(Wallet wallet)
     {
-        return new AtmState(false, wallet);
+        return new AtmState(wallet);
     }
 
-    public static AtmState InfinityWallet()
+    public static IAtmState InfinityWallet()
     {
-        return new AtmState(true, Wallet.Of(Array.Empty<Money>()));
+        return new InfinityAtmState();
     }
 
     public override bool Equals(object? obj)
     {
         var foo = obj as AtmState;
         return foo != null &&
-               EqualityComparer<Wallet>.Default.Equals(_wallet, foo._wallet) &&
-               _infinity == foo._infinity;
+               EqualityComparer<Wallet>.Default.Equals(_wallet, foo._wallet);
     }
 
     public override int GetHashCode()

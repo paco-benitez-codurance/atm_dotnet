@@ -1,81 +1,23 @@
 using atm;
+using Moq;
 
 namespace test_atm;
 
 public class AtmShould
 {
-    private Atm _atm = null!;
-
-    [SetUp]
-    public void Setup()
-    {
-        _atm = Atm.InfinityWallet();
-    }
-
     [Test]
-    public void ReturnEmptyList_when_Zero()
+    public void ReturnCoinSplitterList()
     {
-        var actual = _atm.WithDraw(0);
+        var coinSplitter = new Mock<CoinSplitter>();
+        const int money = 33;
+        var coins = new List<Money>() { Money.Fifty, Money.One };
+        coinSplitter.Setup(cs => cs.WithDrawAsList(money)).Returns(coins);
 
-        var expected = Wallet.Of(Array.Empty<Money>());
+        var atm = Atm.InfinityWallet(coinSplitter.Object);
+        var actual = atm.WithDraw(money);
+
+        var expected = Wallet.Of(coins.ToArray());
         Assert.That(actual, Is.EqualTo(expected));
     }
 
-    [Test]
-    [TestCaseSource(nameof(Coins))]
-    public void ReturnOneCoin_when_MoneyIsTheValueOfTheCoin(int money, Money coin)
-    {
-        var actual = _atm.WithDraw(money);
-
-        var expected = Wallet.Of(coin);
-        Assert.That(actual, Is.EqualTo(expected));
-    }
-
-    [Test]
-    [TestCase(3)]
-    [TestCase(6)]
-    [TestCase(7)]
-    public void ReturnSum_when_TwoDifferentCoins(int money)
-    {
-        var actual = _atm.WithDraw(money);
-
-        Assert.Multiple(() =>
-        {
-            Assert.That(actual.NumberOfDifferentCoins(), Is.EqualTo(2));
-            Assert.That(actual.Total(), Is.EqualTo(money));
-        });
-    }
-
-    [Test]
-    [TestCase(4)]
-    public void ReturnSum_when_SameTwoCoin(int money)
-    {
-        var actual = _atm.WithDraw(money);
-
-        Assert.Multiple(() =>
-        {
-            Assert.That(actual.NumberOfDifferentCoins(), Is.EqualTo(1));
-            Assert.That(actual.Total(), Is.EqualTo(money));
-        });
-    }
-
-    [Test]
-    public void Return434()
-    {
-        var actual = _atm.WithDraw(434);
-
-        var expected = Wallet.Of(
-            (2, Money.Two),
-            (1, Money.Ten),
-            (1, Money.Twenty),
-            (2, Money.TwoHundred)
-        );
-        Assert.That(actual, Is.EqualTo(expected));
-    }
-
-
-    private static IEnumerable<TestCaseData> Coins()
-    {
-        return Money.All().Select(x => new TestCaseData(x.Value, x));
-    }
 }

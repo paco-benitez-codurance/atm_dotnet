@@ -6,7 +6,7 @@ public class CoinSplitter
     {
     }
 
-    public List<Money> WithDrawAsList(int money)
+    public virtual List<Money> WithDrawAsList(int money)
     {
         if (money == 0) return new List<Money>();
         var head = TakeWithValue(money);

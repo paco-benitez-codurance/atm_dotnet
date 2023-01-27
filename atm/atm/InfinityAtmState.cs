@@ -1,9 +1,19 @@
 namespace atm;
 
-public class InfinityAtmState : IAtmState
+internal class InfinityAtmState : AtmState
 {
-    public bool HasMoney(int money)
+    internal InfinityAtmState(CoinSplitter coinSplitter) : base(coinSplitter)
+    {
+    }
+
+    public override bool HasMoney(int money)
     {
         return true;
     }
+    
+    public override List<Money> WithDrawAsList(int money)
+    {
+        return CoinSplitter.WithDrawAsList(money);
+    }
+
 }

@@ -11,7 +11,7 @@ public class AtmShould
         var coinSplitter = new Mock<CoinSplitter>();
         const int money = 33;
         var coins = new List<Money>() { Money.Fifty, Money.One };
-        coinSplitter.Setup(cs => cs.WithDrawAsList(money)).Returns(coins);
+        coinSplitter.Setup(cs => cs.WithDrawAsList(money, null)).Returns(coins);
 
         var atm = Atm.InfinityWallet(coinSplitter.Object);
         var actual = atm.WithDraw(money);
@@ -24,11 +24,11 @@ public class AtmShould
     public void RaiseErrorIfAtmHasNoMoney()
     {
         const int money = 3;
-        var atmState = new Mock<IAtmState>();
+        var atmState = new Mock<AtmState>();
         atmState.Setup(x => x.HasMoney(money)).Returns(false);
         var app = Atm.Of(atmState.Object);
 
-        Assert.Throws<NotEnoughAtmCash>(() =>
+        Assert.Throws<NotEnoughCoins>(() =>
             app.WithDraw(money)
         );
     }

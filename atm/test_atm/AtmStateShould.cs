@@ -35,11 +35,13 @@ public class AtmStateShould
 
         Assert.That(actual, Is.EqualTo(true));
     }
+    
+    
 
     private static CoinSplitter ACoinSplitter(int money, List<Money> withdraw)
     {
         var coinSplitter = new Mock<CoinSplitter>();
-        coinSplitter.Setup(cs => cs.WithDrawAsList(money)).Returns(withdraw);
+        coinSplitter.Setup(cs => cs.WithDrawAsList(money, null)).Returns(withdraw);
         return coinSplitter.Object;
     }
 }

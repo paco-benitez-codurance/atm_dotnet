@@ -2,37 +2,31 @@
 
 public class Atm
 {
-    private readonly IAtmState _state;
-    private readonly CoinSplitter _coinSplitter;
+    private readonly AtmState _state;
 
-    private Atm(IAtmState state, CoinSplitter coinSplitter)
+    private Atm(AtmState state)
     {
         _state = state;
-        _coinSplitter = coinSplitter;
     }
 
     public Wallet WithDraw(int money)
     {
         if (_state.HasMoney(money) == false)
         {
-            throw new NotEnoughAtmCash();
+            throw new NotEnoughCoins();
         }
-        var result = _coinSplitter.WithDrawAsList(money);
+        var result = _state.WithDrawAsList(money);
         return Wallet.Of(result.ToArray());
     }
 
-    public static Atm Of(IAtmState state)
+    public static Atm Of(AtmState state)
     {
-        return new Atm(state, new CoinSplitter());
+        return new Atm(state);
     }
 
     public static Atm InfinityWallet(CoinSplitter? coinSplitter = null)
     {
-        return new Atm(AtmState.InfinityWallet(), coinSplitter ?? new CoinSplitter());
+        return new Atm(AtmState.InfinityWallet(coinSplitter ?? new CoinSplitter()));
     }
 
-    public IAtmState State()
-    {
-        return _state;
-    }
 }

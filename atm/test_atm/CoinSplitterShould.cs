@@ -1,21 +1,22 @@
+using System.Collections.Immutable;
 using atm;
 
 namespace test_atm;
 
 public class CoinSplitterShould
 {
-    private CoinSplitter _atm = null!;
+    private CoinSplitter _coinSplitter = null!;
 
     [SetUp]
     public void Setup()
     {
-        _atm = new CoinSplitter();
+        _coinSplitter = new CoinSplitter();
     }
 
     [Test]
     public void ReturnEmptyList_when_Zero()
     {
-        var actual = _atm.WithDrawAsList(0);
+        var actual = _coinSplitter.WithDrawAsList(0);
 
         var expected = Array.Empty<Money>();
         Assert.That(actual, Is.EqualTo(expected));
@@ -25,7 +26,7 @@ public class CoinSplitterShould
     [TestCaseSource(nameof(Coins))]
     public void ReturnOneCoin_when_MoneyIsTheValueOfTheCoin(int money, Money coin)
     {
-        var actual = _atm.WithDrawAsList(money);
+        var actual = _coinSplitter.WithDrawAsList(money);
 
         var expected = new List<Money> { coin };
         Assert.That(actual, Is.EqualTo(expected));
@@ -37,7 +38,7 @@ public class CoinSplitterShould
     [TestCase(7)]
     public void ReturnSum_when_TwoDifferentCoins(int money)
     {
-        var actual = _atm.WithDrawAsList(money);
+        var actual = _coinSplitter.WithDrawAsList(money);
 
         Assert.Multiple(() =>
         {
@@ -50,13 +51,36 @@ public class CoinSplitterShould
     [TestCase(4)]
     public void ReturnSum_when_SameTwoCoin(int money)
     {
-        var actual = _atm.WithDrawAsList(money);
+        var actual = _coinSplitter.WithDrawAsList(money);
 
         Assert.Multiple(() =>
         {
             Assert.That(NumberOfDifferentCoins(actual), Is.EqualTo(1));
             Assert.That(Total(actual), Is.EqualTo(money));
         });
+    }
+
+    [Test]
+    public void RaiseErrorIfNoCoins()
+    {
+        const int money = 3;
+        var initialCoins = new List<Money>();
+
+        Assert.Throws<NotEnoughCoins>(() =>
+            _coinSplitter.WithDrawAsList(money, initialCoins)
+        );
+    }
+
+    [Test]
+    public void NoRaiseErrorIfHasCoins()
+    {
+        const int money = 3;
+        var initialCoins = new List<Money>() { Money.Two, Money.One };
+
+        var actual = _coinSplitter.WithDrawAsList(money, initialCoins);
+        Assert.That(
+            actual, Is.EquivalentTo(initialCoins)
+        );
     }
 
 

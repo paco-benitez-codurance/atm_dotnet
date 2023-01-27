@@ -1,3 +1,5 @@
+using System.Collections.Immutable;
+
 namespace atm;
 
 public class CoinSplitter
@@ -6,17 +8,30 @@ public class CoinSplitter
     {
     }
 
-    public virtual List<Money> WithDrawAsList(int money)
+    private Money? TakeWithValue(int money, IEnumerable<Money> from)
     {
-        if (money == 0) return new List<Money>();
-        var head = TakeWithValue(money);
-        var tail = WithDrawAsList(money - head.Value);
-        tail.Add(head);
-        return tail;
+        return from.FirstOrDefault(x => x.Value <= money, null);
     }
 
-    private Money TakeWithValue(int money)
+    public virtual List<Money> WithDrawAsList(int money, List<Money>? initialCoins = null)
     {
-        return Money.All().First(x => x.Value <= money);
+        return _WithDrawAsList(money, initialCoins?.ToImmutableList()).ToList();
+    }
+
+    private ImmutableList<Money> _WithDrawAsList(int money, ImmutableList<Money>? initialCoins = null)
+    {
+        var immutableList = initialCoins?.ToImmutableList();
+        if (money == 0)
+        {
+            return ImmutableList<Money>.Empty;
+        }
+        var head = TakeWithValue(money, immutableList ?? Money.All());
+        if (head == null)
+        {
+            throw new NotEnoughCoins();
+        }
+        var tail = _WithDrawAsList(money - head.Value, immutableList?.Remove(head));
+
+        return tail.Add(head);
     }
 }

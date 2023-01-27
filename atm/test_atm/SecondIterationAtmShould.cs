@@ -83,7 +83,7 @@ public class SecondIterationAtmShould
         
         var secondExpected = Wallet.Of(
             (4, Money.OneHundred),
-            (12, Money.FiveHundred),
+            (12, Money.Fifty),
             (19, Money.Twenty),
             (44, Money.Ten),
             (1, Money.Five)

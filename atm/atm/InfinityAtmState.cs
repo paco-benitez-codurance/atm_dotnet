@@ -11,4 +11,7 @@ internal class InfinityAtmState : AtmState
         return CoinSplitter.WithDrawAsList(money);
     }
 
+    public override void RemoveFromWallet(List<Money> coins)
+    {
+    }
 }

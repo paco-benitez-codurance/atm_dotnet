@@ -27,9 +27,11 @@ public abstract class AtmState
     }
 
     public abstract List<Money> WithDrawAsList(int money);
+
+    public abstract void RemoveFromWallet(List<Money> coins);
   
 
-    public static AtmState Of(Wallet wallet, CoinSplitter? coinSplitter = null)
+    public static LimitedAtmState Of(Wallet wallet, CoinSplitter? coinSplitter = null)
     {
         return new LimitedAtmState(wallet, coinSplitter ?? new CoinSplitter());
     }

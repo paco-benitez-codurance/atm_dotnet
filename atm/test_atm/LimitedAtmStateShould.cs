@@ -43,6 +43,28 @@ public class AtmStateShould
         Assert.That(actual, Is.EqualTo(true));
     }
 
+    [Test]
+    public void ShouldUpdateWalletDifferentElements()
+    {
+        Wallet wallet = Wallet.Of(Money.Five, Money.One);
+        var atmState = AtmState.Of(wallet);
+
+        atmState.RemoveFromWallet(new List<Money> { Money.Five });
+
+        Assert.That(atmState.CurrentWallet(), Is.EqualTo(Wallet.Of(Money.One)));
+    }
+    
+    [Test]
+    public void ShouldUpdateWalletSameElements()
+    {
+        Wallet wallet = Wallet.Of(Money.One, Money.One);
+        var atmState = AtmState.Of(wallet);
+
+        atmState.RemoveFromWallet(new List<Money> { Money.One });
+
+        Assert.That(atmState.CurrentWallet(), Is.EqualTo(Wallet.Of(Money.One)));
+    }
+
 
     private static CoinSplitter ACoinSplitter(int money, List<Money> has, List<Money> withdraw)
     {

@@ -16,8 +16,11 @@ public class Atm
             throw new NotEnoughCoins();
         }
         var result = _state.WithDrawAsList(money);
+        _state.RemoveFromWallet(result);
         return Wallet.Of(result.ToArray());
     }
+
+   
 
     public static Atm Of(AtmState state)
     {
@@ -29,4 +32,8 @@ public class Atm
         return new Atm(AtmState.InfinityWallet(coinSplitter ?? new CoinSplitter()));
     }
 
+    public override string ToString()
+    {
+        return _state.ToString();
+    }
 }

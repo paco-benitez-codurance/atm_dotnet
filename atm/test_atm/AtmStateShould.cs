@@ -11,37 +11,38 @@ public class AtmStateShould
         const int money = 9;
         var wallet = new Mock<Wallet>();
         var withdraw = new List<Money>() { Money.Five };
-        var coinSplitter = ACoinSplitter(money, withdraw);
+        var coinSplitter = ACoinSplitter(money, new List<Money>(), withdraw);
         wallet.Setup(w => w.HasCoins(withdraw)).Returns(false);
-        
-        
+        wallet.Setup(w => w.Coins()).Returns(new List<Money>());
+
+
         var atmState = AtmState.Of(wallet.Object, coinSplitter);
 
         var actual = atmState.HasMoney(money);
         Assert.That(actual, Is.EqualTo(false));
     }
-    
+
     [Test]
     public void ReturnTrueIfHasCoins()
     {
         const int money = 9;
         var wallet = new Mock<Wallet>();
         var withdraw = new List<Money>() { Money.Five };
-        var coinSplitter = ACoinSplitter(money, withdraw);
+        var coinSplitter = ACoinSplitter(money, withdraw, withdraw);
         wallet.Setup(w => w.HasCoins(withdraw)).Returns(true);
+        wallet.Setup(w => w.Coins()).Returns(withdraw);
         var atmState = AtmState.Of(wallet.Object, coinSplitter);
 
         var actual = atmState.HasMoney(money);
 
         Assert.That(actual, Is.EqualTo(true));
     }
-    
-    
 
-    private static CoinSplitter ACoinSplitter(int money, List<Money> withdraw)
+
+    private static CoinSplitter ACoinSplitter(int money, List<Money> has, List<Money> withdraw)
     {
         var coinSplitter = new Mock<CoinSplitter>();
-        coinSplitter.Setup(cs => cs.WithDrawAsList(money, null)).Returns(withdraw);
+        coinSplitter.Setup(cs => cs.WithDrawAsList(money, has)).Returns(withdraw);
         return coinSplitter.Object;
     }
 }

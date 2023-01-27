@@ -59,7 +59,7 @@ public class Wallet
         return _money.GetHashCode();
     }
 
-    public IEnumerable<Money> Coins()
+    public virtual IEnumerable<Money> Coins()
     {
         return _money;
     }

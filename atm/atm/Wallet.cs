@@ -32,14 +32,10 @@ public class Wallet
         return _money.Select(x => x.Value).Sum();
     }
 
-    public int NumberOfDifferentCoins()
+    public virtual bool HasCoins(IEnumerable<Money> coins)
     {
-        return _money.Distinct().Count();
-    }
-
-    public virtual bool HasCoins(List<Money> coins)
-    {
-        throw new NotImplementedException();
+        var clone = new List<Money>(_money);
+        return coins.All(coin => clone.Remove(coin));
     }
 
     public override string ToString()

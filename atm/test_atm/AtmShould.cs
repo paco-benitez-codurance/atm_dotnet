@@ -19,5 +19,18 @@ public class AtmShould
         var expected = Wallet.Of(coins.ToArray());
         Assert.That(actual, Is.EqualTo(expected));
     }
+    
+    [Test]
+    public void RaiseErrorIfAtmHasNoMoney()
+    {
+        const int money = 3;
+        var atmState = new Mock<IAtmState>();
+        atmState.Setup(x => x.HasMoney(money)).Returns(false);
+        var app = Atm.Of(atmState.Object);
+
+        Assert.Throws<NotEnoughAtmCash>(() =>
+            app.WithDraw(money)
+        );
+    }
 
 }

@@ -6,11 +6,11 @@ namespace test_atm;
 public class AtmStateShould
 {
     [Test]
-    public void ReturnFalseIfHasNoMoney()
+    public void ReturnFalseIfHasNoCoins()
     {
         const int money = 9;
         const int notEnoughMoney = 8;
-        var atmState = AtmState(notEnoughMoney);
+        var atmState = AnAtmState(notEnoughMoney);
 
         var actual = atmState.HasMoney(money);
 
@@ -19,18 +19,18 @@ public class AtmStateShould
 
 
     [Test]
-    public void ReturnTrueIfHasMoney()
+    public void ReturnTrueIfHasCoins()
     {
-        const int money = 9;
-        const int enoughMoney = 9;
-        var atmState = AtmState(enoughMoney);
+        const int money = 10;
+        const int enoughMoney = 10;
+        var atmState = AnAtmState(enoughMoney);
 
         var actual = atmState.HasMoney(money);
 
         Assert.That(actual, Is.EqualTo(true));
     }
-
-    private static AtmState AtmState(int notEnoughMoney)
+    
+    private static AtmState AnAtmState(int notEnoughMoney)
     {
         var wallet = new Mock<Wallet>();
         wallet.Setup(w => w.Total()).Returns(notEnoughMoney);

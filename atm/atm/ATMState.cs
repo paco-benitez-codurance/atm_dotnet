@@ -3,21 +3,24 @@ namespace atm;
 public class AtmState : IAtmState
 {
     private readonly Wallet _wallet;
+    private readonly CoinSplitter _coinSplitter;
 
 
-    private AtmState(Wallet wallet)
+    private AtmState(Wallet wallet, CoinSplitter coinSplitter)
     {
         _wallet = wallet;
+        _coinSplitter = coinSplitter;
     }
 
     public bool HasMoney(int money)
     {
+        var coins = _coinSplitter.WithDrawAsList(money);
         return _wallet.Total() >= money;
     }
 
-    public static AtmState Of(Wallet wallet)
+    public static AtmState Of(Wallet wallet, CoinSplitter? coinSpliter = null)
     {
-        return new AtmState(wallet);
+        return new AtmState(wallet, coinSpliter ?? new CoinSplitter());
     }
 
     public static IAtmState InfinityWallet()

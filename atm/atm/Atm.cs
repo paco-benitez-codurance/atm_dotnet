@@ -3,10 +3,12 @@
 public class Atm
 {
     private readonly IAtmState _state;
+    private readonly CoinSplitter _coinSplitter;
 
     private Atm(IAtmState state)
     {
         _state = state;
+        _coinSplitter = new CoinSplitter();
     }
 
     public Wallet WithDraw(int money)
@@ -15,22 +17,8 @@ public class Atm
         {
             throw new NotEnoughAtmCash();
         }
-        var result = WithDrawAsList(money);
+        var result = _coinSplitter.WithDrawAsList(money);
         return Wallet.Of(result.ToArray());
-    }
-
-    private static List<Money> WithDrawAsList(int money)
-    {
-        if (money == 0) return new List<Money>();
-        var head = TakeWithValue(money);
-        var tail = WithDrawAsList(money - head.Value);
-        tail.Add(head);
-        return tail;
-    }
-
-    private static Money TakeWithValue(int money)
-    {
-        return Money.All().First(x => x.Value <= money);
     }
 
     public static Atm Of(IAtmState state)

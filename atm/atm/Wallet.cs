@@ -57,4 +57,9 @@ public class Wallet
     {
         return _money.GetHashCode();
     }
+
+    public bool HasCoins(List<Money> coins)
+    {
+        throw new NotImplementedException();
+    }
 }
